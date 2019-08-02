@@ -1,1 +1,13 @@
 @import "jonikorpi-base-files/reset.css";
+
+html {
+  background-color: black;
+  color: white;
+  font-size: 137.5%;
+}
+
+body {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-family: Menlo, Monaco, "Courier New", Courier, monospace, monospace;
+}
