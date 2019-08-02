@@ -13,4 +13,4 @@ auth.onAuthStateChanged(authenticated => {
   }
 });
 
-render(<p>Hello world</p>, document.body);
+render(<p>Hello itch</p>, document.body);
