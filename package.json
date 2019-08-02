@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start": "parcel --open --port 3000 index.html",
-    "build": "rm -r ./dist && parcel build index.html --experimental-scope-hoisting",
+    "build": "rm -r ./dist && parcel build index.html --experimental-scope-hoisting --public-url './' && zip -r ./dist/build.zip ./dist/*",
     "deploy": "yarn build && now ./dist --local-config='../now.json'"
   },
   "eslintConfig": {
