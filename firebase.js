@@ -16,55 +16,36 @@ firebase.initializeApp({
 const database = firebase.database();
 const auth = firebase.auth();
 
-const useDatabase = input => {
-  const paths = Array.isArray(input) ? input : [input];
+const useDatabase = path => {
   const [data, setData] = useState(undefined);
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    const retries = [];
-    const listeners = [];
-
-    for (const path of paths) {
-      const ref = database.ref(path);
-
-      listeners.push({
-        ref: ref,
-        listener: ref.on(
-          "value",
-          function(snapshot) {
-            setData(data => ({ ...data, [path]: snapshot.val() }));
-            setAttempt(0);
-          },
-          error => {
-            console.error(error);
-            if (attempt < 3 * paths.length) {
-              retries.push(
-                window.setTimeout(() => {
-                  setAttempt(attempt + 1);
-                }, 2000)
-              );
-            }
-          }
-        ),
-      });
-    }
+    const ref = database.ref(path);
+    let retry;
+    const listener = ref.on(
+      "value",
+      function(snapshot) {
+        setData(snapshot.val());
+        setAttempt(0);
+      },
+      error => {
+        console.error(error);
+        if (attempt < 2) {
+          retry = window.setTimeout(() => {
+            setAttempt(attempt + 1);
+          }, 5000);
+        }
+      }
+    );
 
     return () => {
-      for (const { ref, listener } of listeners) {
-        ref.off("value", listener);
-      }
-      for (const retry of retries) {
-        window.clearTimeout(retry);
-      }
+      ref.off("value", listener);
+      window.clearTimeout(retry);
     };
-  }, [...paths, attempt]);
+  }, [path, attempt]);
 
-  if (data === undefined) {
-    return data;
-  } else {
-    return Array.isArray(input) ? data : data[input];
-  }
+  return data;
 };
 
 const update = (updates = {}) => {

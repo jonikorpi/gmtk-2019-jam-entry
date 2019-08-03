@@ -3,6 +3,7 @@ import { useState, useEffect } from "preact/hooks";
 
 import { auth, useDatabase, update } from "./firebase.js";
 import World from "./World.js";
+import { hexesInRadius } from "./hexes.js";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -51,12 +52,21 @@ const Game = ({ user }) => {
       const regionY = 0;
       const x = 0;
       const y = 0;
+      const visibleRegions = hexesInRadius([regionX, regionY], 1);
+      const canSee = {};
+
+      for (const [x, y] of visibleRegions) {
+        canSee[x] = canSee[x] || {};
+        canSee[x][y] = true;
+      }
+
       update({
         [`players/${uid}/public`]: {
           regionX,
           regionY,
           x,
           y,
+          canSee,
         },
         [`players/${uid}/private`]: null,
         [`regions/${regionX}/${regionY}/players/${uid}`]: true,

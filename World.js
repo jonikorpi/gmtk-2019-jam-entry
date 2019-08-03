@@ -31,14 +31,10 @@ const World = ({ uid, regionX, regionY }) => {
 };
 
 const Players = ({ visibleRegions, uid }) => {
-  const regionPlayers = useDatabase(visibleRegions.map(([x, y]) => `regions/${x}/${y}/players`));
   const players = { [uid]: true };
-  for (const key in regionPlayers) {
-    const playersList = regionPlayers[key];
-    if (playersList) {
-      for (const playerId in playersList) {
-        players[playerId] = true;
-      }
+  for (const [x, y] of visibleRegions) {
+    for (const playerId in useDatabase(`regions/${x}/${y}/players`) || {}) {
+      players[playerId] = true;
     }
   }
 
@@ -95,11 +91,23 @@ const MovementUI = ({ uid, regionX, regionY }) => {
   const targets = hexesInRadius([x, y], 1).map(coordinates => getTile(coordinates));
 
   const moveTo = (coordinates, [newRegionX, newRegionY]) => {
+    const visibleRegions = hexesInRadius([newRegionX, newRegionY], 1);
+    const canSee = {};
+
+    for (const [x, y] of visibleRegions) {
+      canSee[x] = canSee[x] || {};
+      canSee[x][y] = true;
+    }
+
     const updates = {
-      [`players/${uid}/public`]: { x: coordinates[0], y: coordinates[1], regionX: newRegionX, regionY: newRegionY },
+      [`players/${uid}/public/x`]: coordinates[0],
+      [`players/${uid}/public/y`]: coordinates[1],
+      [`players/${uid}/public/regionX`]: newRegionX,
+      [`players/${uid}/public/regionY`]: newRegionY,
     };
 
     if (newRegionX !== regionX || newRegionY !== regionY) {
+      updates[`players/${uid}/public/canSee`] = canSee;
       updates[`regions/${regionX}/${regionY}/players/${uid}`] = null;
       updates[`regions/${newRegionX}/${newRegionY}/players/${uid}`] = true;
     }

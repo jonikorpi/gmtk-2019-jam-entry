@@ -3,7 +3,7 @@
     "players": {
       "$playerId": {
         "public": {
-          ".read": "$playerId === auth.uid || (root.child('players').child(auth.uid).child('public').child('regionX').val() === data.child('regionX').val() && root.child('players').child(auth.uid).child('public').child('regionY').val() === data.child('regionY').val())",
+          ".read": "$playerId === auth.uid || root.child('players').child(auth.uid).child('public').child('canSee').child('' + data.child('regionX').val()).child('' + data.child('regionY').val()).val() === true",
           ".write": "$playerId === auth.uid",
           "regionX": {
             ".validate": "newData.isNumber()"
@@ -16,13 +16,12 @@
           },
           "y": {
             ".validate": "newData.isNumber()"
+          },
+          "canSee": {
+            "$x": {
+              "$y": {}
+            }
           }
-          // "canSee": {
-          //   "0,0": {
-          //     "x": 0,
-          //     "y": 0
-          //   }
-          // }
         },
         "private": {
           ".read": "$playerId === auth.uid",
@@ -38,7 +37,7 @@
     "regions": {
       "$x": {
         "$y": {
-          ".read": "auth.uid !== null",
+          ".read": "root.child('players').child(auth.uid).child('public').child('canSee').child($x).child($y).val() === true",
           "players": {
             "$playerId": {
               ".write": "$playerId === auth.uid"
