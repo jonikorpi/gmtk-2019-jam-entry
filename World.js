@@ -2,9 +2,12 @@ import { h, Fragment } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
 import Sprite from "./Sprite.js";
+import { useDatabase, update } from "./firebase.js";
 const { max, min, round, floor, ceil, random } = Math;
 
-const World = () => {
+const World = ({ uid, regionX, regionY }) => {
+  const region = useDatabase(`regions/${regionX}/${regionY}`);
+
   useEffect(() => {
     const baseAngle = 12;
     const angle = 40;

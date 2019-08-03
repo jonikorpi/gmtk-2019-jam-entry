@@ -17,7 +17,7 @@ const App = () => {
     auth.onAuthStateChanged(user => {
       if (user) {
         setUser(user);
-        console.log("Signed in as", user);
+        console.log("Signed in as", user.uid, user);
       } else {
         setUser(null);
         console.log("Signed out");
@@ -39,39 +39,28 @@ render(<App />, document.body);
 
 const Game = ({ user }) => {
   const { uid } = user;
-  const world = useDatabase("world");
-  const playerPublic = useDatabase(`players/${uid}/public`);
-  const playerPrivate = useDatabase(`players/${uid}/private`);
+  const regionX = useDatabase(`players/${uid}/public/regionX`);
+  const regionY = useDatabase(`players/${uid}/public/regionY`);
+  const hasSpawned = regionX !== null && regionY !== null;
 
   useEffect(() => {
-    if (playerPublic === null) {
+    if (!hasSpawned) {
       const regionX = 0;
       const regionY = 0;
-      const regionId = regionX + "," + regionY;
       const x = 0;
       const y = 0;
       update({
         [`players/${uid}/public`]: {
-          regionId,
           regionX,
           regionY,
           x,
           y,
         },
-        // [`players/${uid}/private`]: {},
-        [`regions/${regionId}/players/${uid}`]: true,
+        [`players/${uid}/private`]: null,
+        [`regions/${regionX}/${regionY}/players/${uid}`]: true,
       });
     }
-  }, [playerPublic, playerPrivate]);
+  }, [regionX, regionY]);
 
-  // const region = useDatabase(`regions/test`);
-
-  return (
-    <Fragment>
-      <p>{user.uid}</p>
-      <pre>{JSON.stringify({ world, playerPublic, playerPrivate }, null, 2)}</pre>
-
-      <World />
-    </Fragment>
-  );
+  return hasSpawned ? <World uid={uid} regionX={regionX} regionY={regionY} /> : null;
 };
