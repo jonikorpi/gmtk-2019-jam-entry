@@ -19,6 +19,15 @@ const World = ({ uid, regionX, regionY }) => {
     regions.push({ ...getRegion([x, y]), ...regionData[key] });
   }
 
+  const players = { [uid]: true };
+  for (const region of regions) {
+    if (region.players) {
+      for (const playerId in region.players) {
+        players[playerId] = true;
+      }
+    }
+  }
+
   useEffect(() => {
     const baseAngle = 12;
     const angle = 40;
@@ -83,6 +92,10 @@ const World = ({ uid, regionX, regionY }) => {
             {regions.map(region => {
               const { center } = region;
               return <Sprite x={center[0]} y={center[1]} />;
+            })}
+
+            {Object.keys(players).map(playerId => {
+              return <Sprite x={0} y={0} angle={random() * 360} />;
             })}
           </div>
         </div>
