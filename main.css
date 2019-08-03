@@ -11,3 +11,58 @@ body {
   line-height: 1rem;
   font-family: Menlo, Monaco, "Courier New", Courier, monospace, monospace;
 }
+
+#scrollArea {
+  height: 400vh;
+}
+
+#world {
+  width: 0;
+  height: 0;
+  position: fixed;
+  left: 50%;
+  top: 50vh;
+  perspective: 100vh;
+  pointer-events: none;
+  contain: size layout;
+}
+
+#zoomer {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 0;
+  top: 25vh;
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  contain: size layout;
+}
+
+#translator {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  contain: size layout;
+  transition: transform 2000ms ease-in-out;
+}
+
+.sprite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10vh;
+  height: 10vh;
+}
+
+.sprite.mover {
+  will-change: transform;
+  backface-visibility: hidden;
+  contain: strict;
+  transition: transform 414ms ease-in-out;
+}

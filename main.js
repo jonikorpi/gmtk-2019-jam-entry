@@ -2,6 +2,7 @@ import { h, render, Fragment } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
 import { auth, useDatabase } from "./firebase.js";
+import World from "./World.js";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -49,6 +50,8 @@ const Game = ({ user }) => {
     <Fragment>
       <p>{user.uid}</p>
       <pre>{JSON.stringify(data, null, 2)}</pre>
+
+      <World />
     </Fragment>
   );
 };
