@@ -16,7 +16,6 @@ import {
 import { createRNG } from "./maths.js";
 
 export const regionRadius = 3;
-export const worldRadius = 10;
 export const heightLevels = 4;
 
 const defaultTile = {
@@ -132,7 +131,7 @@ export const getTile = coordinates => {
   }
 };
 
-const generateRegion = coordinates => {
+const generateRegion = (coordinates, worldRadius) => {
   const id = coordinates.join();
   const random = createRNG("region" + id);
 
@@ -174,7 +173,7 @@ const generateRegion = coordinates => {
 };
 
 export const regionCache = new Map();
-export const getRegion = coordinates => {
+export const getRegion = (coordinates, worldRadius) => {
   const id = coordinates.join();
   const cached = regionCache.get(id);
 

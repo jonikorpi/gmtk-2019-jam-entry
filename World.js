@@ -13,42 +13,44 @@ import hexRegion from "./hexRegion.js";
 const { random, max, sqrt } = Math;
 export const margin = 0.2;
 export const unit = 10;
+const regionVisibility = 1;
 
 const World = ({ uid, regionX, regionY }) => {
-  let visibleRegions = hexesInRadius([regionX, regionY], 1);
-  const regionData = useDatabase(visibleRegions.map(([x, y]) => `regions/${x}/${y}`));
+  let visibleRegions = hexesInRadius([regionX, regionY], regionVisibility);
 
-  let regions = [];
-  for (const key in regionData) {
-    const fragments = key.split("/");
-    const x = +fragments[1];
-    const y = +fragments[2];
-    regions.push({ ...getRegion([x, y]), ...regionData[key] });
-  }
+  return (
+    <Camera x={0} y={0} style={{ "--margin": margin, "--unit": unit, "--regionRadius": regionRadius }}>
+      {visibleRegions.map(coordinates => {
+        return <Region coordinates={coordinates} />;
+      })}
 
+      <Players visibleRegions={visibleRegions} uid={uid} />
+    </Camera>
+  );
+};
+
+const Players = ({ visibleRegions, uid }) => {
+  const regionPlayers = useDatabase(visibleRegions.map(([x, y]) => `regions/${x}/${y}/players`));
   const players = { [uid]: true };
-  for (const region of regions) {
-    if (region.players) {
-      for (const playerId in region.players) {
+  for (const key in regionPlayers) {
+    const playersList = regionPlayers[key];
+    if (playersList) {
+      for (const playerId in playersList) {
         players[playerId] = true;
       }
     }
   }
 
-  return (
-    <Camera x={0} y={0} style={{ "--margin": margin, "--unit": unit, "--regionRadius": regionRadius }}>
-      {regions.map(region => {
-        return <Region {...region} />;
-      })}
-
-      {Object.keys(players).map(playerId => {
-        return <Player id={playerId} />;
-      })}
-    </Camera>
-  );
+  return Object.keys(players).map(playerId => {
+    return <Player id={playerId} />;
+  });
 };
 
-const Region = ({ coordinates, center, color, features, id, type }) => {
+const Region = ({ coordinates }) => {
+  const worldRadius = useDatabase("world/radius") || 20;
+  const data = useDatabase(`regions/${coordinates[0]}/${coordinates[1]}`) || {};
+
+  const { center, color, features, id, type } = { ...getRegion(coordinates, worldRadius), ...data };
   const tiles = hexesInRadius(center, regionRadius).map(coordinates => getTile(coordinates));
   const { width, height, path: outlinePath } = hexRegion(regionRadius);
 
@@ -74,11 +76,11 @@ const Player = ({ id }) => {
   }
 
   const { x, y, angle } = data;
-  return hexesInRadius([x, y], regionRadius).map(([x, y]) => (
-    <SVG style={sprite(x, y)}>
-      <path d={polygon(128)} fill="none" stroke="white" />
+  return (
+    <SVG style={sprite(x, y)} className="mover">
+      <path d={polygon(64, 8)} fill="white" />
     </SVG>
-  ));
+  );
 };
 
 export default World;
