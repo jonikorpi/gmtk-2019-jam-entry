@@ -17,6 +17,12 @@
           "y": {
             ".validate": "newData.isNumber()"
           }
+          // "canSee": {
+          //   "0,0": {
+          //     "x": 0,
+          //     "y": 0
+          //   }
+          // }
         },
         "private": {
           ".read": "$playerId === auth.uid",
