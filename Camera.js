@@ -1,16 +1,11 @@
 import { h, Fragment } from "preact";
-import { useState, useEffect } from "preact/hooks";
+import { useEffect } from "preact/hooks";
+const { max } = Math;
 
-import Sprite from "./Sprite.js";
-import { useDatabase, update } from "./firebase.js";
-import { getTile, getRegion } from "./generation.js";
-import { hexesInRadius } from "./hexes.js";
-const { max, min, round, floor, ceil, random } = Math;
-
-const Camera = ({ x, y, children }) => {
+const Camera = ({ x, y, children, style }) => {
   useEffect(() => {
-    const baseAngle = 12;
-    const angle = 40;
+    const baseAngle = 10;
+    const angle = 16;
     const closeZoom = 0;
     const farZoom = -1500;
     let frame, zoomer, lastZoom;
@@ -65,7 +60,7 @@ const Camera = ({ x, y, children }) => {
   return (
     <Fragment>
       <div id="scrollArea" />
-      <div id="world">
+      <div id="world" style={style}>
         <div id="zoomer">
           <div id="translator">{children}</div>
         </div>

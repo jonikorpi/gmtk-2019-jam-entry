@@ -32,7 +32,7 @@ body {
   height: 0;
   position: absolute;
   left: 0;
-  top: 0;
+  top: -5vh;
   will-change: transform;
   transform-style: preserve-3d;
   backface-visibility: hidden;
@@ -52,15 +52,21 @@ body {
   transition: transform 2000ms ease-in-out;
 }
 
-.sprite {
+.SVG {
   position: absolute;
   left: 0;
   top: 0;
-  width: 10vh;
-  height: 10vh;
+  width: calc(2vh * var(--unit) * (1 + var(--margin)));
+  height: calc(2vh * var(--unit) * (1 + var(--margin)));
 }
 
-.sprite.mover {
+.region {
+  width: calc(1.732050808vh * var(--unit) * var(--regionRadius) * 2 * (1 + var(--margin) * 2));
+  height: calc(1.732050808vh * var(--unit) * var(--regionRadius) * 2 * (1 + var(--margin) * 2));
+  /* border: 1px solid cyan; */
+}
+
+.mover {
   will-change: transform;
   backface-visibility: hidden;
   contain: strict;

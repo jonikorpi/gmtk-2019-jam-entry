@@ -103,13 +103,9 @@ export const flatDirectionNames = {
 
 const hexDirections = Object.values(pointyDirections);
 
-export const neighborHexes = ([x, y]) =>
-  hexDirections.map(([dx, dy]) => [x + dx, y + dy]);
+export const neighborHexes = ([x, y]) => hexDirections.map(([dx, dy]) => [x + dx, y + dy]);
 
-export const neighborInDirection = ([x, y], direction) => [
-  x + direction[0],
-  y + direction[1],
-];
+export const neighborInDirection = ([x, y], direction) => [x + direction[0], y + direction[1]];
 
 export const roundCube = ([x, y, z]) => {
   let rx = Math.round(x);
@@ -144,11 +140,7 @@ export const hexesInRadius = (from = origo, radius) => {
   let results = [];
 
   for (let x = -radius; x <= radius; x++) {
-    for (
-      let y = Math.max(-radius, -x - radius);
-      y <= Math.min(radius, -x + radius);
-      y++
-    ) {
+    for (let y = Math.max(-radius, -x - radius); y <= Math.min(radius, -x + radius); y++) {
       let z = -x - y;
       results.push(cubeToAxial([x + fromX, y + fromY, z + fromZ]));
     }
@@ -156,11 +148,7 @@ export const hexesInRadius = (from = origo, radius) => {
   return results;
 };
 
-export const flatHexesInRectangle = (
-  from = origo,
-  width = 2,
-  height = width
-) => {
+export const flatHexesInRectangle = (from = origo, width = 2, height = width) => {
   const rectangle = [];
 
   for (let y = 0; y < height; y++) {
@@ -175,11 +163,7 @@ export const flatHexesInRectangle = (
   return rectangle;
 };
 
-export const pointyHexesInRectangle = (
-  from = origo,
-  width = 2,
-  height = width
-) => {
+export const pointyHexesInRectangle = (from = origo, width = 2, height = width) => {
   const rectangle = [];
 
   for (let y = 0; y < height; y++) {
@@ -222,17 +206,13 @@ export const directionBetween = (from, to) => {
 
 export const pointyAngleBetween = (from, to) => {
   const direction = directionBetween(from, to);
-  const directionIndex = Object.keys(pointyDirectionNames).indexOf(
-    direction.join()
-  );
+  const directionIndex = Object.keys(pointyDirectionNames).indexOf(direction.join());
   return pointyAngles[directionIndex];
 };
 
 export const flatAngleBetween = (from, to) => {
   const direction = directionBetween(from, to);
-  const directionIndex = Object.keys(flatDirectionNames).indexOf(
-    direction.join()
-  );
+  const directionIndex = Object.keys(flatDirectionNames).indexOf(direction.join());
   return flatAngles[directionIndex];
 };
 
@@ -240,11 +220,7 @@ export const rotate = (hex, times) => {
   const cube = axialToCube(hex);
   let [x, y, z] = cube;
 
-  for (
-    let time = 0;
-    times < 0 ? time > times : time < times;
-    time += Math.sign(times)
-  ) {
+  for (let time = 0; times < 0 ? time > times : time < times; time += Math.sign(times)) {
     let x2, y2, z2;
 
     if (times > 0) {
@@ -265,8 +241,7 @@ export const rotate = (hex, times) => {
   return cubeToAxial([x, y, z]);
 };
 
-export const closestSpacedRegion = (hex, regionSpacing) =>
-  roundHex([hex[0] / regionSpacing, hex[1] / regionSpacing]);
+export const closestSpacedRegion = (hex, regionSpacing) => roundHex([hex[0] / regionSpacing, hex[1] / regionSpacing]);
 
 export const hexIsBetweenSpacedRegions = (hex, regionSpacing) => {
   const from = closestSpacedRegion(hex, regionSpacing);
@@ -283,19 +258,15 @@ export const hexIsBetweenSpacedRegions = (hex, regionSpacing) => {
   return [from, to].sort(sortFlatCoordinates);
 };
 
-export const sortFlatCoordinates = (a, b) =>
-  a[1] === b[1] ? (a[0] > b[0] ? -1 : 1) : a[1] > b[1] ? -1 : 1;
-export const sortPointyCoordinates = (a, b) =>
-  a[1] === b[1] ? (a[0] < b[0] ? -1 : 1) : a[1] > b[1] ? -1 : 1;
+export const sortFlatCoordinates = (a, b) => (a[1] === b[1] ? (a[0] > b[0] ? -1 : 1) : a[1] > b[1] ? -1 : 1);
+export const sortPointyCoordinates = (a, b) => (a[1] === b[1] ? (a[0] < b[0] ? -1 : 1) : a[1] > b[1] ? -1 : 1);
 
 // from/to inverted as a hack to make the 0th location appear at the top
 export const locationsOnPath = ([to, from], pathRadius) => {
   const distance = distanceBetween(from.center, to.center);
   const forwardDirection = directionBetween(from.center, to.center);
 
-  const forwardIndex = Object.keys(pointyDirectionNames).indexOf(
-    forwardDirection.join()
-  );
+  const forwardIndex = Object.keys(pointyDirectionNames).indexOf(forwardDirection.join());
 
   const leftIndex = forwardIndex === 0 ? 5 : forwardIndex - 1;
   const rightIndex = forwardIndex === 5 ? 0 : forwardIndex + 1;
@@ -305,32 +276,15 @@ export const locationsOnPath = ([to, from], pathRadius) => {
   const locations = [];
 
   for (let forward = -pathRadius; forward <= distance + pathRadius; forward++) {
-    const middle = [
-      from.center[0] + forward * forwardDirection[0],
-      from.center[1] + forward * forwardDirection[1],
-    ];
+    const middle = [from.center[0] + forward * forwardDirection[0], from.center[1] + forward * forwardDirection[1]];
     locations.push(middle);
 
-    for (
-      let left = 1;
-      left <= pathRadius - Math.max(0, forward - distance);
-      left++
-    ) {
-      locations.push([
-        middle[0] + left * leftDirection[0],
-        middle[1] + left * leftDirection[1],
-      ]);
+    for (let left = 1; left <= pathRadius - Math.max(0, forward - distance); left++) {
+      locations.push([middle[0] + left * leftDirection[0], middle[1] + left * leftDirection[1]]);
     }
 
-    for (
-      let right = 1;
-      right <= pathRadius - Math.max(0, forward - distance);
-      right++
-    ) {
-      locations.push([
-        middle[0] + right * rightDirection[0],
-        middle[1] + right * rightDirection[1],
-      ]);
+    for (let right = 1; right <= pathRadius - Math.max(0, forward - distance); right++) {
+      locations.push([middle[0] + right * rightDirection[0], middle[1] + right * rightDirection[1]]);
     }
   }
 
@@ -341,14 +295,9 @@ export const pathsAroundRegions = (regions, regionMap) => {
   return regions
     .flatMap(({ id, coordinates }) =>
       neighborHexes(coordinates).map(neighborCoordinates => {
-        const neighbor =
-          regionMap[`${neighborCoordinates[0]},${neighborCoordinates[1]}`];
+        const neighbor = regionMap[`${neighborCoordinates[0]},${neighborCoordinates[1]}`];
 
-        return neighbor
-          ? [coordinates, neighborCoordinates]
-              .sort(sortFlatCoordinates)
-              .join(";")
-          : null;
+        return neighbor ? [coordinates, neighborCoordinates].sort(sortFlatCoordinates).join(";") : null;
       })
     )
     .filter((path, index, list) => path && list.indexOf(path) === index)
@@ -368,10 +317,7 @@ export const pathsAroundRegions = (regions, regionMap) => {
 //  +O+O+O+
 //   +O+O+
 export const createSpacedRegions = ({ regionSpacing = 2, ...otherArguments }) =>
-  createRegions(
-    ([x, y]) => [x * regionSpacing, y * regionSpacing],
-    otherArguments
-  );
+  createRegions(([x, y]) => [x * regionSpacing, y * regionSpacing], otherArguments);
 
 export const regionToStaggeredCenter = ([x, y], r) => {
   const a = x * 2 * r + x + r * y;
@@ -403,18 +349,10 @@ export const hexToStaggeredRegion = (axialCoordinates, regionRadius) => {
 
 export const createRegions = (
   centerGetter,
-  {
-    center = origo,
-    worldRadius = 1,
-    regionOverrides = {},
-    regionTypes = {},
-    seed = "vuoro",
-  }
+  { center = origo, worldRadius = 1, regionOverrides = {}, regionTypes = {}, seed = "vuoro" }
 ) => {
   const RNG = createRNG(seed);
-  const regionTypeList = Object.keys(regionTypes).filter(
-    key => key !== "default"
-  );
+  const regionTypeList = Object.keys(regionTypes).filter(key => key !== "default");
 
   const regions = hexesInRadius(center, worldRadius).map(regionCoordinates => {
     const id = `${regionCoordinates[0]},${regionCoordinates[1]}`;
@@ -451,18 +389,10 @@ export const hexesInRing = (from = origo, radius = 1) => {
   const found = new Set();
 
   for (let x = -radius; x <= radius; x++) {
-    for (
-      let y = Math.max(-radius, -x - radius);
-      y <= Math.min(radius, -x + radius);
-      y++
-    ) {
+    for (let y = Math.max(-radius, -x - radius); y <= Math.min(radius, -x + radius); y++) {
       let z = -x - y;
 
-      if (
-        Math.abs(x) === radius ||
-        Math.abs(y) === radius ||
-        Math.abs(z) === radius
-      ) {
+      if (Math.abs(x) === radius || Math.abs(y) === radius || Math.abs(z) === radius) {
         found.add(cubeToAxial([x + fromX, y + fromY, z + fromZ]));
       }
     }
@@ -497,10 +427,7 @@ export const hexWalls = radius => {
     const neighbors = hexesInRing(hex, 1);
     const rotated = rotateArray(
       neighbors,
-      Math.round(
-        ((index + Math.round(hexes.length / 2)) / hexes.length) *
-          neighbors.length
-      )
+      Math.round(((index + Math.round(hexes.length / 2)) / hexes.length) * neighbors.length)
     );
     // const neighbors = hexesInRing(hex, 1);
     rotated.forEach(neighbor => {

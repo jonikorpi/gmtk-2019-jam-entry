@@ -38,7 +38,7 @@ const useDatabase = input => {
           },
           error => {
             console.error(error);
-            if (attempt < 5 * paths.length) {
+            if (attempt < 3 * paths.length) {
               retries.push(
                 window.setTimeout(() => {
                   setAttempt(attempt + 1);

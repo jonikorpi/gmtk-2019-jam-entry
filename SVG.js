@@ -1,11 +1,13 @@
-import React from "react";
+import { h } from "preact";
+
+import { margin as defaultMargin } from "./World.js";
 
 const SVG = ({
   children,
   className,
   width = 256,
   height = 256,
-  margin = 0,
+  margin = defaultMargin,
   setDimensions = false,
   style,
   useRef,
@@ -18,8 +20,8 @@ const SVG = ({
     width={setDimensions ? width : null}
     height={setDimensions ? height : null}
     shapeRendering="optimizeSpeed"
-    viewBox={`${(-width / 2) * (1 + margin)} ${(-height / 2) *
-      (1 + margin)} ${width * (1 + margin)} ${height * (1 + margin)}`}
+    viewBox={`${(-width / 2) * (1 + margin)} ${(-height / 2) * (1 + margin)} ${width * (1 + margin)} ${height *
+      (1 + margin)}`}
     style={style}
     {...otherProps}
   >
