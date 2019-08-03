@@ -1,4 +1,6 @@
-# Work in progress
+# Same Boat
+## Turn-based MMO: two factions, one boat
+
 This is my entry for the GMTK Game Jam 2019. https://itch.io/jam/gmtk-2019
 
 - Live link: https://gmtk-2019-jam-entry.jonikorpi.now.sh
@@ -18,3 +20,4 @@ I'm Joni Korpi, an independent web designer and developer. I make multiplayer ga
 
 - Twitter: https://twitter.com/jonikorpi
 - Website: https://jonikorpi.com
+- @poks#2727 on Discord
