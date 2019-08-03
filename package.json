@@ -12,7 +12,7 @@
   "scripts": {
     "start": "parcel --open --port 3000 index.html",
     "build": "rm -r ./dist && parcel build index.html --experimental-scope-hoisting --public-url './' && zip -r ./dist/build.zip ./dist/*",
-    "deploy": "yarn build && now ./dist --local-config='../now.json' && butler push ./dist/build.zip jonikorpi/gmtk-game-jam-2019-entry:html"
+    "deploy": "yarn build && now ./dist --local-config='../now.json' && butler push ./dist/build.zip jonikorpi/same-boat:html"
   },
   "eslintConfig": {
     "extends": "react-app"
