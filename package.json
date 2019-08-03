@@ -18,6 +18,7 @@
     "extends": "react-app"
   },
   "browserslist": [
+    "last 2 versions",
     ">0.2%",
     "not dead",
     "not ie <= 11",
