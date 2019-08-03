@@ -1,9 +1,10 @@
 import { h, Fragment } from "preact";
+import { useCallback } from "preact/hooks";
 
 import Camera from "./Camera.js";
 import SVG from "./SVG.js";
 
-import { useDatabase } from "./firebase.js";
+import { useDatabase, update } from "./firebase.js";
 import { getRegion, regionRadius, getTile } from "./generation.js";
 import { hexesInRadius, pointyToPixel } from "./hexes.js";
 import sprite from "./sprite.js";
@@ -23,8 +24,8 @@ const World = ({ uid, regionX, regionY }) => {
       {visibleRegions.map(coordinates => {
         return <Region coordinates={coordinates} />;
       })}
-
       <Players visibleRegions={visibleRegions} uid={uid} />
+      <MovementUI uid={uid} regionX={regionX} regionY={regionY} />
     </Camera>
   );
 };
@@ -81,6 +82,43 @@ const Player = ({ id }) => {
       <path d={polygon(64, 8)} fill="white" />
     </SVG>
   );
+};
+
+const MovementUI = ({ uid, regionX, regionY }) => {
+  const oldRegionId = regionX + "," + regionY;
+  const data = useDatabase(`players/${uid}/public`);
+
+  if (!data) {
+    return null;
+  }
+
+  const { x, y, angle } = data;
+  const targets = hexesInRadius([x, y], 1).map(coordinates => getTile(coordinates));
+
+  const moveTo = (coordinates, [regionX, regionY]) => {
+    const newRegionId = regionX + "," + regionY;
+    const updates = { [`players/${uid}/public`]: { x: coordinates[0], y: coordinates[1], regionX, regionY } };
+
+    if (newRegionId !== oldRegionId) {
+      updates[`regions/${oldRegionId}/players/${uid}`] = false;
+      updates[`regions/${newRegionId}/players/${uid}`] = true;
+    }
+
+    update(updates);
+  };
+
+  return targets.map(({ coordinates, region, walkable }) => (
+    <SVG style={sprite(coordinates[0], coordinates[1])} className="mover no-transition">
+      <path
+        d={polygon(128)}
+        fill="none"
+        stroke="currentcolor"
+        className={`${walkable ? "events" : "no-events"} button`}
+        style={{ opacity: walkable ? 1 : 0 }}
+        onClick={() => moveTo(coordinates, region.coordinates)}
+      />
+    </SVG>
+  ));
 };
 
 export default World;

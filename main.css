@@ -72,3 +72,19 @@ body {
   contain: strict;
   transition: transform 414ms ease-in-out;
 }
+
+.no-transition {
+  transition: none;
+}
+
+.events {
+  pointer-events: all;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.button:hover {
+  color: yellow;
+}
