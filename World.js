@@ -1,6 +1,7 @@
-import { h, render, Fragment } from "preact";
+import { h, Fragment } from "preact";
 import { useState, useEffect } from "preact/hooks";
 
+import Sprite from "./Sprite.js";
 const { max, min, round, floor, ceil, random } = Math;
 
 const World = () => {
@@ -64,7 +65,9 @@ const World = () => {
       <div id="scrollArea" />
       <div id="world">
         <div id="zoomer">
-          <div id="translator">hello</div>
+          <div id="translator">
+            <Sprite />
+          </div>
         </div>
       </div>
     </Fragment>
