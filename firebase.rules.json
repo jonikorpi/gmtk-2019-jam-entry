@@ -32,7 +32,7 @@
     "regions": {
       "$x": {
         "$y": {
-          ".read": "data.child('players').child(auth.uid).val() === true",
+          ".read": "true",
           "players": {
             "$playerId": {
               ".write": "$playerId === auth.uid"
@@ -44,3 +44,24 @@
     }
   }
 }
+
+// fromX = root.child('players').child(auth.uid).child('regionX').val()
+// fromY = root.child('players').child(auth.uid).child('regionY').val()
+// toX = $x
+// toY = $y
+
+// (((toX - fromX) * (toX - fromX)) + ((toY - fromY) * (toY - fromY)) + toX - fromX * toY - fromY) <= 1
+// (
+//   (
+//     ($x - root.child('players').child(auth.uid).child('regionX').val()) *
+//     ($x - root.child('players').child(auth.uid).child('regionX').val())
+//   ) +
+//   (
+//     ($y - root.child('players').child(auth.uid).child('regionY').val()) *
+//     ($y - root.child('players').child(auth.uid).child('regionY').val())
+//   ) +
+//   $x -
+//   root.child('players').child(auth.uid).child('regionX').val() *
+//   $y -
+//   root.child('players').child(auth.uid).child('regionY').val()
+// ) <= 1
