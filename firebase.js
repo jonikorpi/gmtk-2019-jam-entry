@@ -17,7 +17,7 @@ const database = firebase.database();
 const auth = firebase.auth();
 
 const useDatabase = path => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(undefined);
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
@@ -49,4 +49,17 @@ const useDatabase = path => {
   return data;
 };
 
-export { database, auth, useDatabase };
+const update = (updates = {}) => {
+  console.log("Updating", updates);
+  return database.ref().update(updates, error => {
+    if (error) {
+      console.error(error);
+    }
+  });
+};
+
+const transaction = (path = "", updater) => {
+  database.ref(path).transaction(updater);
+};
+
+export { database, auth, useDatabase, update, transaction };

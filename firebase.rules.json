@@ -3,10 +3,22 @@
     "players": {
       "$playerId": {
         "public": {
-          ".read": "$playerId === auth.uid || root.child('players').child(auth.uid).child('public').child('inRegion').val() === data.child('inRegion').val()",
+          ".read": "$playerId === auth.uid || root.child('players').child(auth.uid).child('public').child('regionId').val() === data.child('regionId').val()",
           ".write": "$playerId === auth.uid",
-          "inRegion": {
-            ".validate": "root.child('regions').child(newData.val()).child($playerId).val() === true"
+          "regionId": {
+            //".validate": "root.child('regions').child(newData.val()).child($playerId).val() === true && (newData.parent().child('regionX').val() + ',' + newData.parent().child('regionY').val()) === newData.val()"
+          },
+          "regionX": {
+            ".validate": "newData.isNumber()"
+          },
+          "regionY": {
+            ".validate": "newData.isNumber()"
+          },
+          "x": {
+            ".validate": "newData.isNumber()"
+          },
+          "y": {
+            ".validate": "newData.isNumber()"
           }
         },
         "private": {
@@ -25,8 +37,8 @@
         ".read": "data.child('players').child(auth.uid).val() === true",
         "players": {
           "$playerId": {
-            ".write": "$playerId === auth.uid",
-            ".validate": "root.child('players').child(auth.uid).child('inRegion').val() === $regionId"
+            ".write": "$playerId === auth.uid"
+            //".validate": "root.child('players').child(auth.uid).child('regionId').val() === $regionId"
           }
         }
       }
