@@ -4,6 +4,7 @@ import { useEffect } from "preact/hooks";
 import { useDatabase } from "./firebase";
 import { unit } from "./World";
 import { pointyToPixel } from "./hexes";
+import { logerp } from "./maths";
 const { max } = Math;
 
 const Camera = ({ uid, children, style }) => {
@@ -11,7 +12,7 @@ const Camera = ({ uid, children, style }) => {
     const baseAngle = 10;
     const angle = 16;
     const closeZoom = 50;
-    const farZoom = -1500;
+    const farZoom = -2000;
     let frame, zoomer, lastZoom;
     let scrollable = 0;
     let viewportLength = 0;
@@ -20,7 +21,7 @@ const Camera = ({ uid, children, style }) => {
       const scrolled = window.pageYOffset;
       // const scrolled = window.pageXOffset;
       zoomer = zoomer || document.getElementById("zoomer");
-      const zoom = max(0, scrolled / scrollable);
+      const zoom = logerp(1, 2, scrolled / scrollable) - 1;
 
       if (zoom !== lastZoom) {
         zoomer.style.setProperty(
