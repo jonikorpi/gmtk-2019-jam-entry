@@ -1,7 +1,9 @@
+**If you're using a phone or tablet browser, use the live link: https://gmtk-2019-jam-entry.jonikorpi.now.sh instead of launching the game on Itch.** (The method Itch uses to embed its web games makes this one break in Mobile Safari & co.)
+
 # Same Boat
 ## Turn-based MMO: two factions, one boat
 
-This is my entry for the GMTK Game Jam 2019. https://itch.io/jam/gmtk-2019
+This is my entry for the GMTK Game Jam 2019: https://itch.io/jam/gmtk-2019.
 
 - Live link: https://gmtk-2019-jam-entry.jonikorpi.now.sh
 - Source code (open-source, MIT): https://github.com/jonikorpi/gmtk-2019-jam-entry
@@ -18,6 +20,6 @@ This is my entry for the GMTK Game Jam 2019. https://itch.io/jam/gmtk-2019
 ## About me
 I'm Joni Korpi, an independent web designer and developer. I make multiplayer games using the web platform.
 
-- Twitter: https://twitter.com/jonikorpi
+- Twitter: https://twitter.com/jonikorpi)
 - Website: https://jonikorpi.com
 - @poks#2727 on Discord
