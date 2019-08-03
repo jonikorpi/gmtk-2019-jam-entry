@@ -15,7 +15,7 @@ import {
 } from "./hexes.js";
 import { createRNG } from "./maths.js";
 
-export const regionRadius = 3;
+export const regionRadius = 4;
 export const heightLevels = 4;
 
 const defaultTile = {
@@ -40,12 +40,15 @@ const tileTypes = {
   plains: {
     ...defaultTile,
     color: "darkseagreen",
-    sprites: ["Grass"],
+    sprites: [],
+  },
+  forest: {
+    ...defaultTile,
+    color: "forestgreen",
+    sprites: [],
   },
 };
-const tileOverrides = {
-  "0,0": { type: "plains" },
-};
+const tileOverrides = {};
 
 const defaultFeature = { tiles: [], height: 0 };
 const featureTypes = {
@@ -57,6 +60,10 @@ const featureTypes = {
     ...defaultFeature,
     tiles: ["plains"],
   },
+  forest: {
+    ...defaultFeature,
+    tiles: ["forest"],
+  },
 };
 
 const defaultRegion = { color: "black" };
@@ -66,6 +73,11 @@ const regionTypes = {
     ...defaultRegion,
     color: "royalblue",
     features: ["water"],
+  },
+  forest: {
+    ...defaultRegion,
+    color: "forestgreen",
+    features: ["forest", "forest", "forest", "plains"],
   },
 };
 const regionTypeList = Object.keys(regionTypes);

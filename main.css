@@ -61,8 +61,8 @@ body {
 }
 
 .region {
-  width: calc(1.732050808vh * var(--unit) * var(--regionRadius) * 2 * (1 + var(--margin) * 2));
-  height: calc(1.732050808vh * var(--unit) * var(--regionRadius) * 2 * (1 + var(--margin) * 2));
+  width: calc(1.732050808vh * var(--unit) * var(--regionRadius) * 1.925 * (1 + var(--margin) * 2));
+  height: calc(1.732050808vh * var(--unit) * var(--regionRadius) * 1.925 * (1 + var(--margin) * 2));
   /* border: 1px solid cyan; */
 }
 

@@ -57,12 +57,12 @@ const Region = ({ coordinates }) => {
   return (
     <Fragment>
       <SVG style={sprite(center[0], center[1])} className="region" width={width} height={height}>
-        <path d={outlinePath} fill="grey" stroke="white" stroke-width={1 / max(width, height)} />
+        <path d={outlinePath} fill={color} stroke="black" stroke-width={0.25 / max(width, height)} />
 
-        {/* {tiles.map(({ coordinates }) => {
+        {tiles.map(({ coordinates, type, color }) => {
           const [px, py] = pointyToPixel([coordinates[0] - center[0], coordinates[1] - center[1]]);
-          return <path d={polygon()} transform={`translate(${px}, ${py})`} fill="grey" />;
-        })} */}
+          return <path d={polygon(1)} transform={`translate(${px}, ${py})`} fill={color} />;
+        })}
       </SVG>
     </Fragment>
   );
