@@ -22,7 +22,7 @@ const World = ({ uid, regionX, regionY }) => {
   return (
     <Camera uid={uid} style={{ "--margin": margin, "--unit": unit, "--regionRadius": regionRadius }}>
       {visibleRegions.map(coordinates => {
-        return <Region coordinates={coordinates} />;
+        return <Region key={coordinates.join()} coordinates={coordinates} />;
       })}
       <Players visibleRegions={visibleRegions} uid={uid} />
       <MovementUI uid={uid} regionX={regionX} regionY={regionY} />
@@ -39,7 +39,7 @@ const Players = ({ visibleRegions, uid }) => {
   }
 
   return Object.keys(players).map(playerId => {
-    return <Player id={playerId} />;
+    return <Player key={playerId} id={playerId} />;
   });
 };
 
@@ -58,7 +58,7 @@ const Region = ({ coordinates }) => {
 
         {tiles.map(({ coordinates, type, color }) => {
           const [px, py] = pointyToPixel([coordinates[0] - center[0], coordinates[1] - center[1]]);
-          return <path d={polygon(1)} transform={`translate(${px}, ${py})`} fill={color} />;
+          return <path key={coordinates.join()} d={polygon(1)} transform={`translate(${px}, ${py})`} fill={color} />;
         })}
       </SVG>
     </Fragment>
@@ -115,8 +115,8 @@ const MovementUI = ({ uid, regionX, regionY }) => {
     update(updates);
   };
 
-  return targets.map(({ coordinates, region, walkable }) => (
-    <SVG style={sprite(coordinates[0], coordinates[1])} className="mover no-transition">
+  return targets.map(({ coordinates, region, walkable }, index) => (
+    <SVG key={index} style={sprite(coordinates[0], coordinates[1])} className="mover no-transition">
       <path
         d={polygon(128)}
         fill="none"
