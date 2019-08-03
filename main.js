@@ -41,10 +41,12 @@ const Game = ({ user }) => {
   const { uid } = user;
   const regionX = useDatabase(`players/${uid}/public/regionX`);
   const regionY = useDatabase(`players/${uid}/public/regionY`);
-  const hasSpawned = regionX !== null && regionY !== null;
+
+  const hasConnected = regionX !== undefined && regionY !== undefined;
+  const hasSpawned = typeof regionX === "number" && typeof regionY === "number";
 
   useEffect(() => {
-    if (!hasSpawned) {
+    if (hasConnected && !hasSpawned) {
       const regionX = 0;
       const regionY = 0;
       const x = 0;
@@ -62,5 +64,5 @@ const Game = ({ user }) => {
     }
   }, [regionX, regionY]);
 
-  return hasSpawned ? <World uid={uid} regionX={regionX} regionY={regionY} /> : null;
+  return hasConnected && hasSpawned ? <World uid={uid} regionX={regionX} regionY={regionY} /> : null;
 };

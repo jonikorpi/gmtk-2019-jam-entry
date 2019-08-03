@@ -3,10 +3,21 @@ import { useState, useEffect } from "preact/hooks";
 
 import Sprite from "./Sprite.js";
 import { useDatabase, update } from "./firebase.js";
+import { getTile, getRegion } from "./generation.js";
+import { hexesInRadius } from "./hexes.js";
 const { max, min, round, floor, ceil, random } = Math;
 
 const World = ({ uid, regionX, regionY }) => {
-  const region = useDatabase(`regions/${regionX}/${regionY}`);
+  let visibleRegions = hexesInRadius([regionX, regionY], 1);
+  const regionData = useDatabase(visibleRegions.map(([x, y]) => `regions/${x}/${y}`));
+
+  let regions = [];
+  for (const key in regionData) {
+    const fragments = key.split("/");
+    const x = +fragments[1];
+    const y = +fragments[2];
+    regions.push({ ...getRegion([x, y]), ...regionData[key] });
+  }
 
   useEffect(() => {
     const baseAngle = 12;
@@ -69,7 +80,10 @@ const World = ({ uid, regionX, regionY }) => {
       <div id="world">
         <div id="zoomer">
           <div id="translator">
-            <Sprite />
+            {regions.map(region => {
+              const { center } = region;
+              return <Sprite x={center[0]} y={center[1]} />;
+            })}
           </div>
         </div>
       </div>
