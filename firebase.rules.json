@@ -38,7 +38,7 @@
     "regions": {
       "$x": {
         "$y": {
-          ".read": "true",
+          ".read": "auth.uid !== null",
           "players": {
             "$playerId": {
               ".write": "$playerId === auth.uid"

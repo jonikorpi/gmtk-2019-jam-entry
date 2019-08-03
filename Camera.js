@@ -1,8 +1,12 @@
 import { h, Fragment } from "preact";
 import { useEffect } from "preact/hooks";
+
+import { useDatabase } from "./firebase";
+import { unit } from "./World";
+import { pointyToPixel } from "./hexes";
 const { max } = Math;
 
-const Camera = ({ x, y, children, style }) => {
+const Camera = ({ uid, children, style }) => {
   useEffect(() => {
     const baseAngle = 10;
     const angle = 16;
@@ -54,8 +58,12 @@ const Camera = ({ x, y, children, style }) => {
     };
   }, []);
 
+  const { x = 0, y = 0 } = useDatabase(`players/${uid}/public`) || {};
   useEffect(() => {
-    document.getElementById("translator").style.setProperty("transform", `translate3d(${-x * 10}vh, ${-y * 10}vh, 0)`);
+    const [px, py] = pointyToPixel([x, y]);
+    document
+      .getElementById("translator")
+      .style.setProperty("transform", `translate3d(${-px * unit}vh, ${-py * unit}vh, 0)`);
   }, [x, y]);
 
   return (

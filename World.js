@@ -20,7 +20,7 @@ const World = ({ uid, regionX, regionY }) => {
   let visibleRegions = hexesInRadius([regionX, regionY], regionVisibility);
 
   return (
-    <Camera x={0} y={0} style={{ "--margin": margin, "--unit": unit, "--regionRadius": regionRadius }}>
+    <Camera uid={uid} style={{ "--margin": margin, "--unit": unit, "--regionRadius": regionRadius }}>
       {visibleRegions.map(coordinates => {
         return <Region coordinates={coordinates} />;
       })}
@@ -85,7 +85,6 @@ const Player = ({ id }) => {
 };
 
 const MovementUI = ({ uid, regionX, regionY }) => {
-  const oldRegionId = regionX + "," + regionY;
   const data = useDatabase(`players/${uid}/public`);
 
   if (!data) {
@@ -95,13 +94,14 @@ const MovementUI = ({ uid, regionX, regionY }) => {
   const { x, y, angle } = data;
   const targets = hexesInRadius([x, y], 1).map(coordinates => getTile(coordinates));
 
-  const moveTo = (coordinates, [regionX, regionY]) => {
-    const newRegionId = regionX + "," + regionY;
-    const updates = { [`players/${uid}/public`]: { x: coordinates[0], y: coordinates[1], regionX, regionY } };
+  const moveTo = (coordinates, [newRegionX, newRegionY]) => {
+    const updates = {
+      [`players/${uid}/public`]: { x: coordinates[0], y: coordinates[1], regionX: newRegionX, regionY: newRegionY },
+    };
 
-    if (newRegionId !== oldRegionId) {
-      updates[`regions/${oldRegionId}/players/${uid}`] = false;
-      updates[`regions/${newRegionId}/players/${uid}`] = true;
+    if (newRegionX !== regionX || newRegionY !== regionY) {
+      updates[`regions/${regionX}/${regionY}/players/${uid}`] = null;
+      updates[`regions/${newRegionX}/${newRegionY}/players/${uid}`] = true;
     }
 
     update(updates);
