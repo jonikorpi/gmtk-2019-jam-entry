@@ -18,17 +18,33 @@ const auth = firebase.auth();
 
 const useDatabase = path => {
   const [data, setData] = useState(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     const ref = database.ref(path);
-    const listener = ref.on("value", function(snapshot) {
-      setData(snapshot.val());
-    });
+    let retry;
+    const listener = ref.on(
+      "value",
+      function(snapshot) {
+        setData(snapshot.val());
+      },
+      error => {
+        console.error(error);
+        if (attempt < 5) {
+          retry = window.setTimeout(() => {
+            setAttempt(attempt + 1);
+          }, 2000);
+        }
+      }
+    );
 
     return () => {
-      ref.off(listener);
+      ref.off("value", listener);
+      if (retry) {
+        window.clearTimeout(retry);
+      }
     };
-  }, [path]);
+  }, [path, attempt]);
 
   return data;
 };

@@ -10,6 +10,7 @@ const App = () => {
   useEffect(() => {
     auth.signInAnonymously().catch(function(error) {
       setError(error);
+      console.error(error);
     });
 
     auth.onAuthStateChanged(user => {
@@ -36,12 +37,18 @@ const App = () => {
 render(<App />, document.body);
 
 const Game = ({ user }) => {
-  const test = useDatabase("test");
+  const { uid } = user;
+  const data = {
+    world: useDatabase(`world`),
+    public: useDatabase(`players/${uid}/public`),
+    private: useDatabase(`players/${uid}/private`),
+    region: useDatabase(`regions/test`),
+  };
 
   return (
     <Fragment>
       <p>{user.uid}</p>
-      <p>{test}</p>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
     </Fragment>
   );
 };
