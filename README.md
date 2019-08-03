@@ -3,7 +3,7 @@
 # Same Boat
 ## Turn-based MMO: two factions, one boat
 
-This is my entry for the GMTK Game Jam 2019: https://itch.io/jam/gmtk-2019.
+This is my entry for the GMTK Game Jam 2019: https://itch.io/jam/gmtk-2019
 
 - Live link: https://gmtk-2019-jam-entry.jonikorpi.now.sh
 - Source code (open-source, MIT): https://github.com/jonikorpi/gmtk-2019-jam-entry
