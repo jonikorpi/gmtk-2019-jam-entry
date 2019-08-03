@@ -1,0 +1,35 @@
+{
+  "rules": {
+    "players": {
+      "$playerId": {
+        "public": {
+          ".read": "$playerId === auth.uid || root.child('players').child(auth.uid).child('public').child('inRegion').val() === data.child('inRegion').val()",
+          ".write": "$playerId === auth.uid",
+          "inRegion": {
+            ".validate": "root.child('regions').child(newData.val()).child($playerId).val() === true"
+          }
+        },
+        "private": {
+          ".read": "$playerId === auth.uid",
+          ".write": "$playerId === auth.uid"
+        }
+      }
+    },
+
+    "world": {
+      ".read": "auth.uid !== null"
+    },
+
+    "regions": {
+      "$regionId": {
+        ".read": "data.child('players').child(auth.uid).val() === true",
+        "players": {
+          "$playerId": {
+            ".write": "$playerId === auth.uid",
+            ".validate": "root.child('players').child(auth.uid).child('inRegion').val() === $regionId"
+          }
+        }
+      }
+    }
+  }
+}
