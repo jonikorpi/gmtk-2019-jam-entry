@@ -76,7 +76,7 @@ const Player = ({ id }) => {
   const { x, y, angle } = data;
   return hexesInRadius([x, y], regionRadius).map(([x, y]) => (
     <SVG style={sprite(x, y)}>
-      <path d={polygon(128)} fill="none" stroke="red" />
+      <path d={polygon(128)} fill="none" stroke="white" />
     </SVG>
   ));
 };

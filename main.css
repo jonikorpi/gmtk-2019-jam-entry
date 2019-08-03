@@ -32,7 +32,7 @@ body {
   height: 0;
   position: absolute;
   left: 0;
-  top: -5vh;
+  top: 0;
   will-change: transform;
   transform-style: preserve-3d;
   backface-visibility: hidden;

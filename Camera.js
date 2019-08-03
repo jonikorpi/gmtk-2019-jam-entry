@@ -6,7 +6,7 @@ const Camera = ({ x, y, children, style }) => {
   useEffect(() => {
     const baseAngle = 10;
     const angle = 16;
-    const closeZoom = 0;
+    const closeZoom = 50;
     const farZoom = -1500;
     let frame, zoomer, lastZoom;
     let scrollable = 0;
@@ -21,7 +21,8 @@ const Camera = ({ x, y, children, style }) => {
       if (zoom !== lastZoom) {
         zoomer.style.setProperty(
           "transform",
-          `translateZ(${closeZoom + zoom * farZoom}vh) rotateX(${baseAngle + (1 - zoom) * angle}deg)`
+          `translateZ(${closeZoom + zoom * farZoom}vh) translateY(${(1 - zoom * zoom) * -5}vh) rotateX(${baseAngle +
+            (1 - zoom) * angle}deg)`
           // `translateZ(${closeZoom}vh) rotateX(${baseAngle + angle}deg) rotateZ(${((scrolled % (viewportLength * 2)) /
           //   (viewportLength * 2)) *
           //   -360}deg)`
