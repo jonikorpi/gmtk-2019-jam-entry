@@ -15,7 +15,7 @@ import {
 } from "./hexes.js";
 import { createRNG } from "./maths.js";
 
-export const regionRadius = 4;
+export const regionRadius = 2;
 export const heightLevels = 4;
 
 const defaultTile = {
@@ -81,6 +81,8 @@ const regionTypes = {
   },
 };
 const regionTypeList = Object.keys(regionTypes);
+const regionLandBag = [...regionTypeList.filter(type => type !== "ocean")];
+const regionBag = [...regionTypeList, ...regionLandBag, ...regionLandBag];
 
 const regionOverrides = {
   "0,0": { type: "plains" },
@@ -152,7 +154,7 @@ const generateRegion = (coordinates, worldRadius) => {
     ? regionOverrides[id].type
     : distanceBetween([0, 0], coordinates) > worldRadius - 1
     ? "ocean"
-    : random.pick(regionTypeList);
+    : random.pick(regionBag);
   const regionType = regionTypes[type];
 
   const possibleCoordinates = hexesInRadius(center, regionRadius);

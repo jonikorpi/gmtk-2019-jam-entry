@@ -14,7 +14,7 @@ import hexRegion from "./hexRegion.js";
 const { random, max, sqrt } = Math;
 export const margin = 0.2;
 export const unit = 10;
-const regionVisibility = 1;
+const regionVisibility = 2;
 
 const World = ({ uid, regionX, regionY }) => {
   let visibleRegions = hexesInRadius([regionX, regionY], regionVisibility);
